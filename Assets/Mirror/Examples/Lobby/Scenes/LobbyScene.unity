@@ -328,7 +328,7 @@ MonoBehaviour:
   lobbyPlayerPrefab: {fileID: 114033720796874720, guid: deae2134a1d77704b9c595efe69767dd,
     type: 3}
   LobbyScene: LobbyScene
-  GameplayScene: OnlineScene
+  GameplayScene: Battle
   allPlayersReady: 0
 --- !u!4 &2008127832
 Transform:
