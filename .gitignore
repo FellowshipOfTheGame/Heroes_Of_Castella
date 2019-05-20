@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+
+# Mirror Examples
+Assets/Mirror/Examples
