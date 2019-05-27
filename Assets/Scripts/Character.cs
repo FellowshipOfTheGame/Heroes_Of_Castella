@@ -4,11 +4,5 @@ using UnityEngine;
 
 public class Character : ScriptableObject
 {
-    // Struct com informações para networking
-    [System.Serializable]
-    public abstract class CharacterInfo{
-        public string name;
-        public int hp;
-        public int mp;
-    }
+    // Todos os atributos aqui deve ser serializaveis e nao devem conter nenhuma referencia
 }

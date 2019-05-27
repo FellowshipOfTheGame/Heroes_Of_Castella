@@ -4,10 +4,6 @@ using UnityEngine;
 
 public abstract class TurnQueue
 {
-    public enum Implementations
-    {
-        // List all possible implementations of TurnQueue here
-    }
     public TurnQueue(IEnumerable<Battler> newBattlers){
         battlers.AddRange(newBattlers);
         SortQueue();
