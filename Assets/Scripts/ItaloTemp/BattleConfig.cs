@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 [System.Serializable]
 public struct BattlerRef{
-    Character character;
+    CharacterSO character;
     Vector2 pos;
     bool isPlayerControlled;
 }
