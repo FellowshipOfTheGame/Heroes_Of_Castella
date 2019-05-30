@@ -7,13 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 
 [System.Serializable]
-public static class Serializable<T>
+public class Serializable<T>
 {
-    public static byte[] SerializedForNetwork(T obj)
+    public byte[] SerializedForNetwork()
     {
         MemoryStream stream = new MemoryStream();
         BinaryFormatter binaryFormatter = new BinaryFormatter();
-        binaryFormatter.Serialize(stream, obj);
+        binaryFormatter.Serialize(stream, this);
         return stream.GetBuffer();
     }
 

@@ -15,6 +15,32 @@ MonoBehaviour:
   character:
     characterInfo:
       name: asafa
-    name: asaf
-    equipment: 
-    skills: []
+      attributes:
+        strength: 123
+        agility: 0
+        vitality: 0
+      personality:
+        agressivity: 0
+        empathy: 0
+    equipment: 030000000400000002000000
+    skills:
+    - type: 0
+      targetType: 0
+      baseDamage: 0
+      damageToActionPoints: 1
+      lifeDrain: 1
+      hitsCount: 0
+      range: 0
+      extraDamage: 0
+      extraCost: 0
+      targetShape: 
+    - type: 0
+      targetType: 0
+      baseDamage: 0
+      damageToActionPoints: 0
+      lifeDrain: 0
+      hitsCount: 0
+      range: 0
+      extraDamage: 0
+      extraCost: 0
+      targetShape: 

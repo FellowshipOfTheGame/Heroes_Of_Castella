@@ -36,7 +36,7 @@ public static class EnumAttribute
 }
 
 [System.Serializable]
-public class Character
+public class Character : Serializable<Character>
 {
     public enum EquipmentType
     {
@@ -56,16 +56,16 @@ public class Character
     [System.Serializable]
     public struct Attributes
     {
-        int strength;
-        int agility;
-        int vitality;
+        public int strength;
+        public int agility;
+        public int vitality;
     }
 
     [System.Serializable]
     public struct Personality
     {
-        int agressivity;
-        int empathy;
+        public int agressivity;
+        public int empathy;
     }
 
     [System.Serializable]
@@ -79,11 +79,13 @@ public class Character
 
 
     public CharacterInfo characterInfo;
-    public string name;
-    public Attributes attributes;
-    public Personality personality;
-    [NamedArrayAttribute (new string[] {"Armor", "Helmet", "Legs", "Shield"})]
+    //public string name;
+    //public Attributes attributes;
+    //public Personality personality;
+    //[NamedArrayAttribute (new string[] {"Armor", "Helmet", "Legs", "Shield"})]
     public int[] equipment;
+
+    
     public Skill[] skills;
 
     public void IterationOnStruct()
@@ -93,4 +95,6 @@ public class Character
             Console.WriteLine("{0} = {1}", field.Name, field.GetValue(characterInfo));
         }
     }
+
+
 }

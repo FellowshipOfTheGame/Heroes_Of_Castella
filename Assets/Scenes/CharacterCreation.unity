@@ -141,7 +141,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502fe1d3cd9be954184c48ddf1f422ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 11400000, guid: 4db474506b471a14696fba951d8f7d4c, type: 2}
+  characterSO: {fileID: 11400000, guid: f0736a9ca23327347b7a565b1df4b496, type: 2}
+  character:
+    characterInfo:
+      name: 
+      attributes:
+        strength: 0
+        agility: 0
+        vitality: 0
+      personality:
+        agressivity: 0
+        empathy: 0
+    equipment: 01000000020000000300000004000000
+    skills: []
 --- !u!4 &379050936
 Transform:
   m_ObjectHideFlags: 0
