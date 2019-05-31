@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ISkill
+public interface ISkill
 {
-    
+    bool Apply(IBattler agent, params Vector3[] positions);
 }

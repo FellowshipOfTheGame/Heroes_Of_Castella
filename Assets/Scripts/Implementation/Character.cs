@@ -26,7 +26,9 @@ namespace HeroesOfCastella
         }
 
         public string name;
-
+        public Attributes attributes;
+        public Personality personality;
+        public Skill[] skills;
     }
 }
 
