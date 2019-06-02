@@ -13,13 +13,14 @@ namespace HeroesOfCastella
         IBattleMap battleMap = new BattleMap();
         int nTeams = 0;
         const int MAX_TEAMS = 2;
+        [SerializeField] //TODO remove
         List<List<IBattler>> teams = new List<List<IBattler>>();
         bool isReady = false;
 
 
         private void Awake()
         {
-            
+            FindObjectOfType<BattleMapBHV>().SetMap(battleMap);
         }
 
         //PlayerHUB will request to add team
@@ -55,9 +56,10 @@ namespace HeroesOfCastella
             }
             turnManager.SetBattlers(battlers);
             isReady = true;
+            turnManager.Unlock();
         }
 
-        public bool IsReady() //TODO should probably use an event instead
+        public bool IsReady() //TODO should probably use an event instead - check: what is it for?
         {
             return isReady;
         }

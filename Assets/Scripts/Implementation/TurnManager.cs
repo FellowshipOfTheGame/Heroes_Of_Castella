@@ -13,6 +13,7 @@ namespace HeroesOfCastella
         private event EventHandler myOnBattlerTurn;
         private List<IBattler> battlers = new List<IBattler>(); //TODO recebe a referência
         private bool locked = true;
+        private IBattler activeBattler;
 
         public class TurnEventArgs : EventArgs
         {
@@ -64,6 +65,7 @@ namespace HeroesOfCastella
 
         public void Update()
         {
+            // Debug.Log("Update() on TurnManager");
             if (locked)
                 return;
             //Delegate to queue
@@ -73,6 +75,7 @@ namespace HeroesOfCastella
                 if (b.IsReady())
                 {
                     locked = true;
+                    activeBattler = b;
                     myOnBattlerTurn?.Invoke(this, new TurnEventArgs(b));
                     //Run timer (thread?) to unlock when it's over
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -105,6 +108,7 @@ namespace HeroesOfCastella
         private async Task DelayedUnlock(int miliseconds)
         {
             await Task.Delay(miliseconds);
+            activeBattler.SetInitiative(0);
             Unlock();
         }
 

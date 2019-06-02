@@ -24,4 +24,5 @@ public interface IBattler
     Byte[] Serialized();
     void Deserialize(Byte[] data);
     void Initialize();
+    string GetName();
 }

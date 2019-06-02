@@ -22,7 +22,7 @@ namespace HeroesOfCastella
 
         readonly Vector3 REF_POS = new Vector3(5,2);
 
-        IBattler[,] battlers = new IBattler[3,6];
+        IBattler[,] battlers = new IBattler[6,3];
 
         List<List<IBattler>> teams = new List<List<IBattler>>();
 
@@ -45,6 +45,8 @@ namespace HeroesOfCastella
                 battler.SetPosition(pos);
             }
             //Place on the map
+            Debug.Log("Battler original position: " + position);
+            Debug.Log("Position on map: " + pos);
             battlers[(int)pos.x, (int)pos.y] = battler;
             //All went right? - Check for conflicts, out of range, etc.
             return true;
@@ -78,6 +80,11 @@ namespace HeroesOfCastella
         public float GetWalkDistance(Vector3 v1, Vector3 v2)
         {
             throw new NotImplementedException();
+        }
+
+        public List<List<IBattler>> GetBattlerTeams()
+        {
+            return teams;
         }
     }
 }

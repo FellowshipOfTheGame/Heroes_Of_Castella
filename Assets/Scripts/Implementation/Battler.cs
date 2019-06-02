@@ -17,12 +17,14 @@ namespace HeroesOfCastella
             //Use serializable fields to describe the battler before effectively serializing to a byte stream
         }
 
-
+        [SerializeField]
         private float initiative;
         [SerializeField]
         public Character character;
+        [SerializeField]
         private Vector3 position;
         private int team;
+        [SerializeField]
         private bool active = false;
 
 
@@ -84,6 +86,7 @@ namespace HeroesOfCastella
         {
             //TODO unbind from TurnManager implementation
             IBattler actor = (e as TurnManager.TurnEventArgs).battler; //FIXME find a better, more generic, way to cast (tried template but got weird)
+            Debug.Log("Battler " + this.GetName() + " knows it is " + actor.GetName() + "'s turn.");
             if (actor != this)
             {
                 //do something?
@@ -93,8 +96,8 @@ namespace HeroesOfCastella
             active = true;
             //Get input
             //If action is legal, set active false ?
-            Action action = new Action(character.skills[0], this, Vector3.zero); //FIXME mock
-            MyOnActionChosen?.Invoke(this, new MyEventArgs(action)); //FIXME mock
+            // Action action = new Action(character.skills[0], this, Vector3.zero); //FIXME mock
+            // MyOnActionChosen?.Invoke(this, new MyEventArgs(action)); //FIXME mock
             active = false; //FIXME remove this - must check if chosen action is legal before setting active to false
         }
 
@@ -151,6 +154,10 @@ namespace HeroesOfCastella
             active = value;
         }
 
+        public string GetName()
+        {
+            return character.name;
+        }
     }
 }
 
