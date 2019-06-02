@@ -2,16 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Mirror;
+using System.Threading.Tasks;
 
 namespace HeroesOfCastella
 {
-    public class TurnManager : ITurnManager
+    public class TurnManager : ITurnManager //TODO inherit from NetworkBehaviour?
     {
-        event EventHandler OnBattlerTurn;
-        private event EventHandler myOnBattleTurn;
-        private List<IBattler> battlers = new List<IBattler>();
-
+        //event EventHandler OnBattlerTurn;
+        private event EventHandler myOnBattlerTurn;
+        private List<IBattler> battlers = new List<IBattler>(); //TODO recebe a referência
+        private bool locked = true;
 
         public class TurnEventArgs : EventArgs
         {
@@ -26,22 +27,36 @@ namespace HeroesOfCastella
         {
             add
             {
-                myOnBattleTurn += value;
+                myOnBattlerTurn += value;
             }
 
             remove
             {
-                myOnBattleTurn += value;
+                myOnBattlerTurn += value;
             }
         }
 
-        public TurnManager (List<IBattler> battlers)
+        public TurnManager()
         {
+
+        }
+
+        //public TurnManager (List<IBattler> battlers)
+        //{
+        //    SetBattlers(battlers);
+        //}
+
+        public void SetBattlers(List<IBattler> battlers)
+        {
+            if (this.battlers.Count > 0)
+            {
+                //remove listeners, clear list, etc
+            }
             this.battlers = battlers;
             foreach (IBattler b in battlers)
             {
-                //b.OnActionChosen += OnBattlerActionChosen;
-                OnBattlerTurn += b.OnBattlerTurn;
+                myOnBattlerTurn += b.OnBattlerTurn; //Each battler will listen when it is someone's turn
+                //b.OnActionChosen += OnBattlerActionChosen; //Turn Manager will listen when a battler has chosen an action //Removed: turn manager should know when the action is completed, instead
             }
         }
 
@@ -49,14 +64,21 @@ namespace HeroesOfCastella
 
         public void Update()
         {
+            if (locked)
+                return;
             //Delegate to queue
             foreach(IBattler b in battlers)
             {
+                //It is some battler's turn
                 if (b.IsReady())
                 {
-                    OnBattlerTurn?.Invoke(this, new TurnEventArgs(b));
-                    //b.OnBattlerTurn(b); // not how its supposed to be: an event, instead
-                    return;
+                    locked = true;
+                    myOnBattlerTurn?.Invoke(this, new TurnEventArgs(b));
+                    //Run timer (thread?) to unlock when it's over
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    DelayedUnlock(3000); // TODO use coroutine if threading f**ks up
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    return; // could return some other value (IEnumerator even) for a wrapper class to start the coroutine
                 }
             }
             foreach (IBattler b in battlers)
@@ -65,10 +87,27 @@ namespace HeroesOfCastella
             }
         }
 
-        //void OnBattlerActionChosen(System.Object sender, EventArgs e)
-        //{
+        public void Lock() //Just setting this variable won't suffice: required to set a forced lock so that the Turn Manager won't unlock itself
+        {
+            locked = true;
+        }
 
+        public void Unlock()
+        {
+            locked = false;
+        }
+
+        //public void OnBattlerTurnEnded(System.Object sender, EventArgs e)
+        //{
+        //    locked = false;
         //}
+
+        private async Task DelayedUnlock(int miliseconds)
+        {
+            await Task.Delay(miliseconds);
+            Unlock();
+        }
+
     }
 }
 

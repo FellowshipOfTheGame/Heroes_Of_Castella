@@ -2,25 +2,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 namespace HeroesOfCastella
 {
-    public class Battler<T> : IBattler where T: TurnManager.TurnEventArgs
+    
+
+    [System.Serializable]
+    public class Battler : IBattler
     {
+        [System.Serializable]
+        private struct BattlerSerialized
+        {
+            //Use serializable fields to describe the battler before effectively serializing to a byte stream
+        }
+
+
         private float initiative;
-        private Character character;
+        [SerializeField]
+        public Character character;
+        private Vector3 position;
+        private int team;
+        private bool active = false;
 
 
 
         private event EventHandler MyOnActionChosen;
 
 
-        public Battler()
+        public void Initialize()
         {
             initiative = character.attributes.initiative;
             //ITurnManager t = new TurnManager(new List<IBattler>());
             //t.OnBattlerTurn += OnBattlerTurn;
         }
+
 
 
         event EventHandler IBattler.OnActionChosen
@@ -45,12 +61,12 @@ namespace HeroesOfCastella
 
         public Vector3 GetPosition()
         {
-            throw new NotImplementedException();
+            return position;
         }
 
         public bool IsReady()
         {
-            throw new NotImplementedException();
+            return initiative >= 12; //TODO use const
         }
 
         //Test
@@ -63,33 +79,78 @@ namespace HeroesOfCastella
             }
         }
 
+        //Event: it is some battler's turn
         public void OnBattlerTurn(System.Object sender, EventArgs e)
         {
             //TODO unbind from TurnManager implementation
-            IBattler actor = (e as T).battler;
+            IBattler actor = (e as TurnManager.TurnEventArgs).battler; //FIXME find a better, more generic, way to cast (tried template but got weird)
             if (actor != this)
             {
                 //do something?
                 return;
             }
-            Action action = new Action(character.skills[0], this, Vector3.zero);
-            MyOnActionChosen?.Invoke(this, new MyEventArgs(action));
+            //It is my turn
+            active = true;
+            //Get input
+            //If action is legal, set active false ?
+            Action action = new Action(character.skills[0], this, Vector3.zero); //FIXME mock
+            MyOnActionChosen?.Invoke(this, new MyEventArgs(action)); //FIXME mock
+            active = false; //FIXME remove this - must check if chosen action is legal before setting active to false
         }
 
         public void SetPosition(Vector3 position)
         {
-            throw new NotImplementedException();
+            this.position = position;
         }
 
         public int TakeDamage(int damage)
         {
-            throw new NotImplementedException();
+            Debug.Log("Damage taken: " + damage); //TODO implement
+            return damage; // Should return real damage taken instead
         }
 
         public void UpdateInitiative()
         {
             initiative += (5 + character.attributes.initiative) / 5f;
         }
+
+        public int GetTeam()
+        {
+            return team;
+        }
+
+        public void SetTeam(int team)
+        {
+            this.team = team;
+        }
+
+        public void SetInitiative(float value)
+        {
+            initiative = value;
+        }
+
+        public byte[] Serialized()
+        {
+            //Format to a struct (with serializable data only) then use binary formatter to serialize
+            throw new NotImplementedException();
+        }
+
+        public void Deserialize(byte[] data)
+        {
+            //Use binary formatter to deserialize to a struct then "build" the object from the struct's fields
+            throw new NotImplementedException();
+        }
+
+        public bool IsActive()
+        {
+            return active;
+        }
+
+        public void SetActive(bool value)
+        {
+            active = value;
+        }
+
     }
 }
 
