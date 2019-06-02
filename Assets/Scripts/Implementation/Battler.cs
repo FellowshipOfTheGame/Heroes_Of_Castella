@@ -32,7 +32,7 @@ namespace HeroesOfCastella
         private event EventHandler MyOnActionChosen;
 
 
-        public void Initialize()
+        public void InitializeInitiative()
         {
             initiative = character.attributes.initiative;
             //ITurnManager t = new TurnManager(new List<IBattler>());
@@ -81,11 +81,16 @@ namespace HeroesOfCastella
             }
         }
 
+        public void SubscribeToOnTurnStart(ref OnTurnStartDelegate e)
+        {
+            e += OnBattlerTurn;
+        }
+
         //Event: it is some battler's turn
-        public void OnBattlerTurn(System.Object sender, EventArgs e)
+        private void OnBattlerTurn(IBattler battler)
         {
             //TODO unbind from TurnManager implementation
-            IBattler actor = (e as TurnManager.TurnEventArgs).battler; //FIXME find a better, more generic, way to cast (tried template but got weird)
+            IBattler actor = battler;
             Debug.Log("Battler " + this.GetName() + " knows it is " + actor.GetName() + "'s turn.");
             if (actor != this)
             {
@@ -158,6 +163,8 @@ namespace HeroesOfCastella
         {
             return character.name;
         }
+
+        
     }
 }
 
