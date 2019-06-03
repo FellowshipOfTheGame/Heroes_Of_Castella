@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class PlayerHub : NetworkBehaviour
 {
-    // Deve ser um singleton para os clientes
+    // Deve ser um "singleton" para os clientes
     private static PlayerHub instance = null;
     public static PlayerHub Instance{ get{ return instance; } }
     public void Awake(){

@@ -23,4 +23,10 @@ public abstract class TurnManager : NetworkBehaviour
     [Server]
     private void DecisionReached(Action action){
     }
+
+    [Server]
+    private void InstantiateBattlers()
+    {
+
+    }
 }

@@ -11,7 +11,16 @@ public class Battler : NetworkBehaviour
     public PlayerHub Player { get{ return (brain == null)? null : brain.Player;} }
     [SyncVar]
     private int id;
-    public int ID { get { return id; } }
+    public int ID {
+        get
+        {
+            return id;
+        }
+        set
+        {
+            if (isServer) id = value;
+        }
+    }
     public void YourTurn(){
         brain.RequestDecision();
     }
