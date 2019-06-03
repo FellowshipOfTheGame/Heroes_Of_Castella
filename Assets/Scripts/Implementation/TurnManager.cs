@@ -11,9 +11,9 @@ namespace HeroesOfCastella
     {
         //event EventHandler OnBattlerTurn;
         private event OnTurnStartDelegate myOnBattlerTurn;
-        private List<IBattler> battlers = new List<IBattler>(); //TODO recebe a referência
+        private List<ITurnTaker> battlers = new List<ITurnTaker>(); //TODO recebe a referência
         private bool locked = true;
-        private IBattler activeBattler;
+        private ITurnTaker activeBattler;
 
         event OnTurnStartDelegate ITurnManager.OnBattlerTurn
         {
@@ -33,14 +33,14 @@ namespace HeroesOfCastella
 
         }
 
-        public void SetBattlers(List<IBattler> battlers)
+        public void SetBattlers(List<ITurnTaker> battlers)
         {
             if (this.battlers.Count > 0)
             {
                 //remove listeners, clear list, etc
             }
             this.battlers = battlers;
-            foreach (IBattler b in battlers)
+            foreach (ITurnTaker b in battlers)
             {
                 //myOnBattlerTurn += b.OnBattlerTurn; //Each battler will listen when it is someone's turn
                 b.SubscribeToOnTurnStart(ref myOnBattlerTurn);
@@ -55,7 +55,7 @@ namespace HeroesOfCastella
             if (locked)
                 return;
             //Delegate to queue
-            foreach(IBattler b in battlers)
+            foreach(ITurnTaker b in battlers)
             {
                 //It is some battler's turn
                 if (b.IsReady())
@@ -70,7 +70,7 @@ namespace HeroesOfCastella
                     return; // could return some other value (IEnumerator even) for a wrapper class to start the coroutine
                 }
             }
-            foreach (IBattler b in battlers)
+            foreach (ITurnTaker b in battlers)
             {
                 b.UpdateInitiative();
             }
@@ -98,7 +98,7 @@ namespace HeroesOfCastella
             Unlock();
         }
 
-        public void RemoveBattler(IBattler battler)
+        public void RemoveBattler(ITurnTaker battler)
         {
             battler.UnSubscribeToOnTurnStart(ref myOnBattlerTurn);
             battlers.Remove(battler);

@@ -92,10 +92,10 @@ namespace HeroesOfCastella
         }
 
         //Event: it is some battler's turn
-        private void OnBattlerTurn(IBattler battler)
+        private void OnBattlerTurn(ITurnTaker battler)
         {
             //TODO unbind from TurnManager implementation
-            IBattler actor = battler;
+            IBattler actor = battler as IBattler;
             Debug.Log("Battler " + this.GetName() + " knows it is " + actor.GetName() + "'s turn.");
             if (actor != this)
             {

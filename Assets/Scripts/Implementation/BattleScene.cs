@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Mirror;
+using System.Linq;
 
 
 namespace HeroesOfCastella
@@ -54,7 +55,7 @@ namespace HeroesOfCastella
                     b.OnActionChosen += OnBattlerActionChosen;
                 }
             }
-            turnManager.SetBattlers(battlers);
+            turnManager.SetBattlers(battlers.ToList<ITurnTaker>());
             isReady = true;
             turnManager.Unlock();
         }

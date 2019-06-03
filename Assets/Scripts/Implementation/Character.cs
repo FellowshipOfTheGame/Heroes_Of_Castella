@@ -25,7 +25,7 @@ namespace HeroesOfCastella
             public float agressivity;
         }
 
-        public string name;
+        public string name = "NEMO";
         public Attributes attributes;
         public Personality personality;
         public Skill[] skills;
