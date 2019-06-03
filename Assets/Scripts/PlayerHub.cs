@@ -8,6 +8,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class PlayerHub : NetworkBehaviour
 {
+    // Decidimos que nessa implementação as batalhas serão 1 contra 1
+    // Caso isso seja expandido, times deverão ser deteminados de outra maneira
+    private int id; // ID aqui tambem indica o time
+    public int ID { get{ return id; } set{ if(isServer) id = value; } }
     // Deve ser um "singleton" para os clientes
     private static PlayerHub instance = null;
     public static PlayerHub Instance{ get{ return instance; } }
@@ -22,7 +26,8 @@ public class PlayerHub : NetworkBehaviour
         IFormatter formatter = new BinaryFormatter();
         MemoryStream stream = new MemoryStream(serialBattleRef);
         battlerInfo = (BattlerRef)formatter.Deserialize(stream);
-        // Create new battler
+        // Cria o novo battler (o time é o ID na nossa implementacao)
+        MapGrid.Instance.InstiateBattler(battlerInfo, ID);
     }
 
     // Liga a UI de selecionar ação do battler encontrado com o id de parametro

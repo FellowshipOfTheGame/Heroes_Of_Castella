@@ -14,6 +14,7 @@ public class CharacterSO : ScriptableObject
     [SerializeField]
     private int pa;
     public int PA {get; set;}
+    public string meshName;
 
     // Todos os atributos aqui devem ser serializaveis e nao devem conter nenhuma referencia
 }
