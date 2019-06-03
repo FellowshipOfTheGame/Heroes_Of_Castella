@@ -29,7 +29,7 @@ namespace HeroesOfCastella
 
 
 
-        private event EventHandler MyOnActionChosen;
+        private event OnActionChosenDelegate MyOnActionChosen;
 
 
         public void InitializeInitiative()
@@ -41,7 +41,7 @@ namespace HeroesOfCastella
 
 
 
-        event EventHandler IBattler.OnActionChosen
+        public event OnActionChosenDelegate OnActionChosen
         {
             add
             {
@@ -84,6 +84,11 @@ namespace HeroesOfCastella
         public void SubscribeToOnTurnStart(ref OnTurnStartDelegate e)
         {
             e += OnBattlerTurn;
+        }
+
+        public void UnSubscribeToOnTurnStart(ref OnTurnStartDelegate e)
+        {
+            e -= OnBattlerTurn;
         }
 
         //Event: it is some battler's turn

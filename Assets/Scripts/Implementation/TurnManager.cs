@@ -33,11 +33,6 @@ namespace HeroesOfCastella
 
         }
 
-        //public TurnManager (List<IBattler> battlers)
-        //{
-        //    SetBattlers(battlers);
-        //}
-
         public void SetBattlers(List<IBattler> battlers)
         {
             if (this.battlers.Count > 0)
@@ -53,7 +48,6 @@ namespace HeroesOfCastella
             }
         }
 
-        
 
         public void Update()
         {
@@ -104,6 +98,11 @@ namespace HeroesOfCastella
             Unlock();
         }
 
+        public void RemoveBattler(IBattler battler)
+        {
+            battler.UnSubscribeToOnTurnStart(ref myOnBattlerTurn);
+            battlers.Remove(battler);
+        }
     }
 }
 

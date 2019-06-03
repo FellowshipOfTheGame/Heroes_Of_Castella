@@ -69,10 +69,10 @@ namespace HeroesOfCastella
             turnManager.Update();
         }
 
-        void OnBattlerActionChosen(System.Object sender, EventArgs e)
+        void OnBattlerActionChosen(IAction action)
         {
             //Make sure the action happens
-            IAction action = (e as Battler.MyEventArgs).action; //TODO find a way to fix these template stuff
+            // IAction action = (e as Battler.MyEventArgs).action; //TODO find a way to fix these template stuff
             //Execute action
             //Do something if action is invalid
             //Then...
