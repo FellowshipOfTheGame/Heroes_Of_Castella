@@ -34,7 +34,7 @@ namespace HeroesOfCastella {
                 return;
             }
 
-            AsyncChooseAction(); // Check if this code is right
+            AsyncChooseAction(); // Check if this code is right - It is! S2 =) \o/
                     
         }
 
