@@ -9,6 +9,7 @@ public interface IBattler : ITurnTaker, ISerializable, IMapElement
     //Battle
     int GetTeam();
     void SetTeam(int team);
+    void InitializeBattler();
     //status effects...
     int TakeDamage(int damage);
     //To subscribe and unsubscribe to void OnActionChosen(Action a)

@@ -12,6 +12,7 @@ public interface IBattleMap
     bool MoveBattlerTo(IBattler battler, Vector3 position);
     float GetDistance(Vector3 v1, Vector3 v2);
     float GetWalkDistance(Vector3 v1, Vector3 v2);
+    Vector3 GetSize();
     List<List<IBattler>> GetBattlerTeams();
     IMapElement GetElementAt(Vector3 pos);
 }

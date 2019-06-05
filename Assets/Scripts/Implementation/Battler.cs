@@ -27,8 +27,8 @@ namespace HeroesOfCastella
         [SerializeField]
         private bool active = false;
 
-
-        private IBrain brain; // TODO: Make it an SO, so that it can be more freely swapped?
+        [SerializeField]
+        private IBrain brain = new Brain_Random(); // TODO: Make it an SO, so that it can be more freely swapped?
 
        
         public Vector3 Position { get => _position; set => _position = value; }
@@ -47,6 +47,19 @@ namespace HeroesOfCastella
             //ITurnManager t = new TurnManager(new List<IBattler>());
             //t.OnBattlerTurn += OnBattlerTurn;
         }
+
+        public void InitializeBattler()
+        {
+            //Set hp and whatever else
+            brain.Initialize(this, Map);
+            brain.OnActionChosen += OnBrainActionChosen; // listen to own brain
+            if (character.skills.Length == 0) //FIXME remove this code - MOCK
+            {
+                character.skills = new Skill[1];
+                character.skills[0] = new Skill();
+            }
+        }
+
 
 
 
@@ -113,18 +126,19 @@ namespace HeroesOfCastella
             // Action action = new Action(character.skills[0], this, Vector3.zero); //FIXME mock
             // MyOnActionChosen?.Invoke(this, new MyEventArgs(action)); //FIXME mock
             // Battler => Brain => PlayerHub:Server => PlayerHub:Client => HUD -> PlayerHub:Client -> PlayerHub:Server -> Brain -> Battler
-            //       brain.ChooseAction(); // brain will choose an action to take and trigger an event once it is chosen
+            brain.ChooseAction(); // brain will choose an action to take and trigger an event once it is chosen
 
-            OnBrainActionChosen(new Action(new Skill(), this, Position)); //FIXME Mock
+            //OnBrainActionChosen(new Action(new Skill(), this, Position)); //FIXME Mock
 
             // deactivation of battler should happen when it gets an event telling that the brain's choice of action was accepted
             active = false; //FIXME remove this - must check if chosen action is legal before setting active to false.
         }
 
-        private void OnBrainActionChosen(Action action)
+        private void OnBrainActionChosen(IAction action)
         {
             // MyOnActionChosen?.Invoke(action); // Should there be an event for this?
-            action.skill.Apply(this, action.target);
+            Action act = action as Action;
+            act.skill.Apply(this, act.target);
         }
 
         public int TakeDamage(int damage)

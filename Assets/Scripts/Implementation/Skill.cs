@@ -49,6 +49,7 @@ namespace HeroesOfCastella
             {
                 targetBattler.HP -= (agent as Battler).character.attributes.strength;
                 (agent as Battler).HP -= 1;
+                Debug.Log(" ===== ACTION TIME! ===== " + agent.GetName() + " uses skill against " + targetBattler.GetName());
                 return true;
             }
             return false;            

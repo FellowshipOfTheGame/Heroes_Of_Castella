@@ -18,10 +18,24 @@ namespace HeroesOfCastella
         List<List<IBattler>> teams = new List<List<IBattler>>();
         bool isReady = false;
 
+        
+
 
         private void Awake()
         {
             FindObjectOfType<BattleMapBHV>().SetMap(battleMap);
+            //TODO remove below (test)
+            //string[] scripts = AssetDatabase.FindAssets(filter: "", searchInFolders: new string[]{ "Assets/Scripts/Abstract" });
+            //Debug.Log("--- Found scripts: ");
+            //foreach (string s in scripts)
+            //{
+            //    Debug.Log(" - " + s);
+            //}
+            //object[] scripts = Resources.FindObjectsOfTypeAll(typeof(Battler));
+            //foreach (object s in scripts)
+            //{
+            //    Debug.Log(" - " + s.GetType());
+            //}
         }
 
         //PlayerHUB will request to add team
@@ -53,6 +67,7 @@ namespace HeroesOfCastella
                 foreach (IBattler b in t)
                 {
                     b.OnActionChosen += OnBattlerActionChosen;
+                    b.InitializeBattler(); // TODO maybe find a better place to get it into
                 }
             }
             //turnManager.SetBattlers(battlers.ToList<ITurnTaker>());

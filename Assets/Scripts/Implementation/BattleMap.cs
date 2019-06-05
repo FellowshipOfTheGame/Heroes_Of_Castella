@@ -93,6 +93,11 @@ namespace HeroesOfCastella
         {
             return battlers[(int)pos.x, (int)pos.y];
         }
+
+        public Vector3 GetSize()
+        {
+            return new Vector3(6, 3, 1); // FIXME MOCK
+        }
     }
 }
 
