@@ -16,6 +16,7 @@ namespace HeroesOfCastella
             this.battler = battler;
             this.target = target;
         }
+
     }
 }
 

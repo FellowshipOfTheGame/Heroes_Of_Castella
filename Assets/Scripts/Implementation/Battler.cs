@@ -34,6 +34,10 @@ namespace HeroesOfCastella
         public Vector3 Position { get => _position; set => _position = value; }
         public IBattleMap Map { get; set; }
 
+        [SerializeField]
+        private int _hitpoints = 100; //FIXME MOCK
+        public int HP { get => _hitpoints; set => _hitpoints = value; }
+
         private event OnActionChosenDelegate MyOnActionChosen;
 
 
@@ -101,6 +105,7 @@ namespace HeroesOfCastella
                 //do something?
                 return;
             }
+            Debug.Log(this.GetName() + " is choosing his action.");
             //It is my turn
             active = true;
             //Get input
@@ -110,15 +115,16 @@ namespace HeroesOfCastella
             // Battler => Brain => PlayerHub:Server => PlayerHub:Client => HUD -> PlayerHub:Client -> PlayerHub:Server -> Brain -> Battler
             //       brain.ChooseAction(); // brain will choose an action to take and trigger an event once it is chosen
 
-            //OnBrainActionChosen(new Action(character.skills[0], this, Position)); //FIXME Mock
+            OnBrainActionChosen(new Action(new Skill(), this, Position)); //FIXME Mock
 
             // deactivation of battler should happen when it gets an event telling that the brain's choice of action was accepted
             active = false; //FIXME remove this - must check if chosen action is legal before setting active to false.
         }
 
-        private void OnBrainActionChosen(IAction action)
+        private void OnBrainActionChosen(Action action)
         {
-
+            // MyOnActionChosen?.Invoke(action); // Should there be an event for this?
+            action.skill.Apply(this, action.target);
         }
 
         public int TakeDamage(int damage)

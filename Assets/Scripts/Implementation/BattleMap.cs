@@ -88,6 +88,11 @@ namespace HeroesOfCastella
         {
             return teams;
         }
+
+        public IMapElement GetElementAt(Vector3 pos)
+        {
+            return battlers[(int)pos.x, (int)pos.y];
+        }
     }
 }
 

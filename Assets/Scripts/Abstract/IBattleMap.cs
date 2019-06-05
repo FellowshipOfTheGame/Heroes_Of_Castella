@@ -13,4 +13,5 @@ public interface IBattleMap
     float GetDistance(Vector3 v1, Vector3 v2);
     float GetWalkDistance(Vector3 v1, Vector3 v2);
     List<List<IBattler>> GetBattlerTeams();
+    IMapElement GetElementAt(Vector3 pos);
 }

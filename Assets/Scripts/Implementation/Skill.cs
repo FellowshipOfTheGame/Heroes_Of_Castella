@@ -45,11 +45,13 @@ namespace HeroesOfCastella
         //ISkill
         public bool Apply(IBattler agent, params Vector3[] target)
         {
-            if (agent.GetType() == typeof(IBattler))
+            if (agent.Map.GetElementAt(target[0]) is Battler targetBattler) // targetBattler != null, it should be
             {
-                
+                targetBattler.HP -= (agent as Battler).character.attributes.strength;
+                (agent as Battler).HP -= 1;
+                return true;
             }
-            throw new System.NotImplementedException();
+            return false;            
         }
         
     }

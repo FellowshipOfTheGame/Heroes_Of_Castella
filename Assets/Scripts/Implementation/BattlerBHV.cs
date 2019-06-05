@@ -7,7 +7,7 @@ namespace HeroesOfCastella
 {
     public class BattlerBHV : MonoBehaviour
     {
-        public IBattler battler;
+        public Battler battler;
 
         // Start is called before the first frame update
         void Start()
