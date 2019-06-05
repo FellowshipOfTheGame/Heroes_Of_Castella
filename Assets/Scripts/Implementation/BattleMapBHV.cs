@@ -31,7 +31,7 @@ namespace HeroesOfCastella
                     foreach(IBattler b in team)
                     {
                         bt++;
-                        Vector3 pos = b.GetPosition();
+                        Vector3 pos = b.Position;
                         pos = new Vector3(pos.x, 0, pos.y);
                         pos = (pos - new Vector3(5 / 2f, 0f, 2 / 2f)) * 2 + new Vector3((t-1.5f)*1, 0);
                         Quaternion rot = Quaternion.LookRotation(Vector3.back * (t - 1.5f));

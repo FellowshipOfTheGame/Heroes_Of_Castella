@@ -53,7 +53,7 @@ namespace Mock
                 Vector3Int pos = availablePositions[rand];
                 availablePositions.RemoveAt(rand);
                 Debug.Log("Position from PlayerHub: " + pos);
-                b.SetPosition(pos);
+                b.Position = pos;
             }
         }
     }

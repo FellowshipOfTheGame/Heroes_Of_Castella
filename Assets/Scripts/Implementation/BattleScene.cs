@@ -55,7 +55,8 @@ namespace HeroesOfCastella
                     b.OnActionChosen += OnBattlerActionChosen;
                 }
             }
-            turnManager.SetBattlers(battlers.ToList<ITurnTaker>());
+            //turnManager.SetBattlers(battlers.ToList<ITurnTaker>());
+            turnManager.TurnTakers = battlers.ToList<ITurnTaker>();
             isReady = true;
             turnManager.Unlock();
         }

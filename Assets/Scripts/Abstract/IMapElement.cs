@@ -3,6 +3,6 @@
 public interface IMapElement
 {
     //Map - Position and Navigation
-    Vector3 GetPosition();
-    void SetPosition(Vector3 position);
+    Vector3 Position { get; set; }
+    IBattleMap Map { get; set; }
 }

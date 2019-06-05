@@ -22,12 +22,17 @@ namespace HeroesOfCastella
         [SerializeField]
         public Character character;
         [SerializeField]
-        private Vector3 position;
+        private Vector3 _position; // TODO remove, probably
         private int team;
         [SerializeField]
         private bool active = false;
 
 
+        private IBrain brain; // TODO: Make it an SO, so that it can be more freely swapped?
+
+       
+        public Vector3 Position { get => _position; set => _position = value; }
+        public IBattleMap Map { get; set; }
 
         private event OnActionChosenDelegate MyOnActionChosen;
 
@@ -61,11 +66,6 @@ namespace HeroesOfCastella
             return initiative;
         }
 
-        public Vector3 GetPosition()
-        {
-            return position;
-        }
-
         public bool IsReady()
         {
             return initiative >= 12; //TODO use const
@@ -94,7 +94,6 @@ namespace HeroesOfCastella
         //Event: it is some battler's turn
         private void OnBattlerTurn(ITurnTaker battler)
         {
-            //TODO unbind from TurnManager implementation
             IBattler actor = battler as IBattler;
             Debug.Log("Battler " + this.GetName() + " knows it is " + actor.GetName() + "'s turn.");
             if (actor != this)
@@ -108,12 +107,18 @@ namespace HeroesOfCastella
             //If action is legal, set active false ?
             // Action action = new Action(character.skills[0], this, Vector3.zero); //FIXME mock
             // MyOnActionChosen?.Invoke(this, new MyEventArgs(action)); //FIXME mock
-            active = false; //FIXME remove this - must check if chosen action is legal before setting active to false
+            // Battler => Brain => PlayerHub:Server => PlayerHub:Client => HUD -> PlayerHub:Client -> PlayerHub:Server -> Brain -> Battler
+            //       brain.ChooseAction(); // brain will choose an action to take and trigger an event once it is chosen
+
+            //OnBrainActionChosen(new Action(character.skills[0], this, Position)); //FIXME Mock
+
+            // deactivation of battler should happen when it gets an event telling that the brain's choice of action was accepted
+            active = false; //FIXME remove this - must check if chosen action is legal before setting active to false.
         }
 
-        public void SetPosition(Vector3 position)
+        private void OnBrainActionChosen(IAction action)
         {
-            this.position = position;
+
         }
 
         public int TakeDamage(int damage)

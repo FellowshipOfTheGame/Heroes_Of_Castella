@@ -11,9 +11,30 @@ namespace HeroesOfCastella
     {
         //event EventHandler OnBattlerTurn;
         private event OnTurnStartDelegate myOnBattlerTurn;
-        private List<ITurnTaker> battlers = new List<ITurnTaker>(); //TODO recebe a referência
         private bool locked = true;
         private ITurnTaker activeBattler;
+
+        private List<ITurnTaker> _turnTakers = new List<ITurnTaker>();
+        public List<ITurnTaker> TurnTakers {
+            get {
+                return _turnTakers;
+            }
+            set {
+                if (_turnTakers.Count > 0)
+                {
+                    //TODO implement
+                    throw new NotImplementedException();
+                    //remove listeners, clear list, etc
+                }
+                _turnTakers = value;
+                foreach (ITurnTaker b in _turnTakers)
+                {
+                    //myOnBattlerTurn += b.OnBattlerTurn; //Each battler will listen when it is someone's turn
+                    b.SubscribeToOnTurnStart(ref myOnBattlerTurn);
+                    //b.OnActionChosen += OnBattlerActionChosen; //Turn Manager will listen when a battler has chosen an action //Removed: turn manager should know when the action is completed, instead
+                }
+            }
+        } // = new List<ITurnTaker>();
 
         event OnTurnStartDelegate ITurnManager.OnBattlerTurn
         {
@@ -33,20 +54,23 @@ namespace HeroesOfCastella
 
         }
 
-        public void SetBattlers(List<ITurnTaker> battlers)
-        {
-            if (this.battlers.Count > 0)
-            {
-                //remove listeners, clear list, etc
-            }
-            this.battlers = battlers;
-            foreach (ITurnTaker b in battlers)
-            {
-                //myOnBattlerTurn += b.OnBattlerTurn; //Each battler will listen when it is someone's turn
-                b.SubscribeToOnTurnStart(ref myOnBattlerTurn);
-                //b.OnActionChosen += OnBattlerActionChosen; //Turn Manager will listen when a battler has chosen an action //Removed: turn manager should know when the action is completed, instead
-            }
-        }
+        //private List<ITurnTaker> SetBattlers(List<ITurnTaker> battlers)
+        //{
+        //    if (this.TurnTakers.Count > 0)
+        //    {
+        //        //TODO implement
+        //        throw new NotImplementedException();
+        //        //remove listeners, clear list, etc
+        //    }
+        //    // this.TurnTakers = battlers;
+        //    foreach (ITurnTaker b in battlers)
+        //    {
+        //        //myOnBattlerTurn += b.OnBattlerTurn; //Each battler will listen when it is someone's turn
+        //        b.SubscribeToOnTurnStart(ref myOnBattlerTurn);
+        //        //b.OnActionChosen += OnBattlerActionChosen; //Turn Manager will listen when a battler has chosen an action //Removed: turn manager should know when the action is completed, instead
+        //    }
+        //    return battlers;
+        //}
 
 
         public void Update()
@@ -55,7 +79,7 @@ namespace HeroesOfCastella
             if (locked)
                 return;
             //Delegate to queue
-            foreach(ITurnTaker b in battlers)
+            foreach(ITurnTaker b in TurnTakers)
             {
                 //It is some battler's turn
                 if (b.IsReady())
@@ -70,7 +94,7 @@ namespace HeroesOfCastella
                     return; // could return some other value (IEnumerator even) for a wrapper class to start the coroutine
                 }
             }
-            foreach (ITurnTaker b in battlers)
+            foreach (ITurnTaker b in TurnTakers)
             {
                 b.UpdateInitiative();
             }
@@ -101,7 +125,7 @@ namespace HeroesOfCastella
         public void RemoveBattler(ITurnTaker battler)
         {
             battler.UnSubscribeToOnTurnStart(ref myOnBattlerTurn);
-            battlers.Remove(battler);
+            TurnTakers.Remove(battler);
         }
     }
 }

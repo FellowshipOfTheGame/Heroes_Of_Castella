@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace HeroesOfCastella
 {
+    // TODO user IMapElement instead of IBattler whenever possible
     public class BattleMap : IBattleMap
     {
         enum FrontalPos
@@ -36,13 +37,14 @@ namespace HeroesOfCastella
          */
         public bool AddBattler(IBattler battler, Vector3 position) //TODO remove from interface (?)
         {
+            battler.Map = this;
             int team = battler.GetTeam();
-            Vector3 pos = battler.GetPosition();
+            Vector3 pos = battler.Position;
             //Adjust global position
             if (team != 0)
             {
                 pos = REF_POS - pos;
-                battler.SetPosition(pos);
+                battler.Position = pos;
             }
             //Place on the map
             Debug.Log("Battler original position: " + position);
@@ -57,7 +59,7 @@ namespace HeroesOfCastella
             teams.Add(team);
             foreach(IBattler b in team)
             {
-                AddBattler(b, b.GetPosition());
+                AddBattler(b, b.Position);
             }
             return true;
         }

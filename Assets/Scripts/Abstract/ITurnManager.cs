@@ -8,8 +8,7 @@ public delegate void OnTurnStartDelegate(ITurnTaker actor); // TODO: if using a 
 public interface ITurnManager
 {
     void Update(); //TODO should really be public? - probably not, might use Start(), Lock(), Pause() instead to manage flow
-    void SetBattlers(List<ITurnTaker> battlers);
-    void RemoveBattler(ITurnTaker battler);
+    List<ITurnTaker> TurnTakers { get; set; }
     event OnTurnStartDelegate OnBattlerTurn;
     //event EventHandler OnBattlerTurn; //TODO replace by AddListener/RemoveListener?
     //void OnBattlerTurnEnded(System.Object sender, EventArgs e);
