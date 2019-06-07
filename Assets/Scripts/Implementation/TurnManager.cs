@@ -89,7 +89,7 @@ namespace HeroesOfCastella
                     myOnBattlerTurn?.Invoke(b);
                     //Run timer (thread?) to unlock when it's over
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    DelayedUnlock(3000); // TODO use coroutine if threading f**ks up
+                    DelayedUnlock(6000); // TODO use coroutine if threading f**ks up
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     return; // could return some other value (IEnumerator even) for a wrapper class to start the coroutine
                 }

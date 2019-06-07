@@ -86,7 +86,7 @@ namespace HeroesOfCastella
             turnManager.Update();
         }
 
-        void OnBattlerActionChosen(IAction action)
+        void OnBattlerActionChosen(IAction action) // TODO remove this; maybe TurnManager should listen to battler instead, case they are done
         {
             //Make sure the action happens
             // IAction action = (e as Battler.MyEventArgs).action; //TODO find a way to fix these template stuff

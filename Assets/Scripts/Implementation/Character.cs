@@ -5,7 +5,7 @@ using UnityEngine;
 namespace HeroesOfCastella
 {
     [System.Serializable]
-    public class Character : ICharacter
+    public class Character
     {
         [System.Serializable]
         public struct Attributes {

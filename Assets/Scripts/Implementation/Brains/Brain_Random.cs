@@ -6,6 +6,36 @@ using UnityEngine;
 
 
 namespace HeroesOfCastella {
+
+    public static class ThreadSafeRandom
+    {
+        private static System.Random _global = new System.Random();
+        [System.ThreadStatic]
+        private static System.Random _local;
+
+        public static int Next()
+        {
+            System.Random inst = _local;
+            if (inst == null)
+            {
+                int seed;
+                lock (_global) seed = _global.Next();
+                _local = inst = new System.Random(seed);
+            }
+            return inst.Next();
+        }
+
+        public static int Range(int a1, int a2)
+        {
+            if (a1 == a2)
+                return a1;
+            int length = a2 - a1;
+            int offset = Next() % length;
+            return offset + a1;
+        }
+    }
+
+
     public class Brain_Random : IBrain
     {
         Battler battler;
@@ -50,18 +80,23 @@ namespace HeroesOfCastella {
             stopwatch.Start();
             Action action = new Action(new Skill(), battler, battler.Position); // FIXME crappy initialization - use default constructor?
             bool actionChosen = false;
+            UnityEngine.Debug.Log("Choosing random action");
             while (stopwatch.ElapsedMilliseconds < 2000 && !actionChosen) // FIXME inject wait time
             {
                 if (stopwatch.ElapsedMilliseconds < 1500) // FIXME Remove: Async test
                     continue;
-
-                int rand = Random.Range(0, skillsCount);
+                UnityEngine.Debug.Log("Choosing...");
+                int rand = ThreadSafeRandom.Range(0, skillsCount);
                 Vector3 mapSize = (battleMap.GetSize());
-                Vector3 randTargetPos = new Vector3(Random.Range(0, (int)mapSize.x), Random.Range(0, (int)mapSize.y));
+                Vector3 randTargetPos = new Vector3(ThreadSafeRandom.Range(0, (int)mapSize.x), ThreadSafeRandom.Range(0, (int)mapSize.y));
                 action = new Action(battler.character.skills[rand], battler, new Vector3(randTargetPos.x, randTargetPos.y));
                 Battler target = (Battler)battleMap.GetElementAt(randTargetPos);
-                if (target == null) // no battler on that position
+                if (target == null)
+                { // no battler on that position
+                    UnityEngine.Debug.Log("No battler in that position");
                     continue;
+                }
+                UnityEngine.Debug.Log("Battler found");
                 if ((action.skill as Skill).targetType == Skill.TargetType.ALLIES) // targeted at allies
                 {
                     if (target.GetTeam() == battler.GetTeam())
@@ -79,6 +114,7 @@ namespace HeroesOfCastella {
             }
             if (actionChosen)
             {
+                UnityEngine.Debug.Log("------------------------------------------- Random action chosen");
                 OnActionChosen(action);
             }
         }
