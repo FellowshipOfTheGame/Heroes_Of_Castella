@@ -35,9 +35,7 @@ namespace HeroesOfCastella
                 OnActionChosen(new Action(new Skill(), battler, battler.Position)); //FIXME MOCK
                 return;
             }
-
-            AsyncChooseAction(); // Check if this code is right - It is! S2 =) \o/
-                    
+            AsyncChooseAction(); // Check if this code is right - It is! S2 =) \o/        
         }
 
         private async Task AsyncChooseAction()
@@ -50,7 +48,7 @@ namespace HeroesOfCastella
             int skillsCount = battler.character.skills.Length;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            Action action = new Action(new Skill(), battler, battler.Position); // FIXME crappy initialization - use default constructor?
+            Action action = new Action(battler.character.skills[0], battler, battler.Position); // FIXME crappy initialization - use default constructor?
             bool actionChosen = false;
             UnityEngine.Debug.Log("Choosing random action");
             while (stopwatch.ElapsedMilliseconds < 2000 && !actionChosen) // FIXME inject wait time

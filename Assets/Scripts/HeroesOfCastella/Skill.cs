@@ -7,7 +7,8 @@ using UnityEngine;
 namespace HeroesOfCastella
 {
     [System.Serializable]
-    public class Skill : ISkill
+    [CreateAssetMenu]
+    public class Skill : ScriptableObject, ISkill
     {
         public enum Type
         {
@@ -29,7 +30,7 @@ namespace HeroesOfCastella
             FREE_ENCUMBRANCE
         }
 
-        public string name;
+        //public string name;
         [Header("Type")]
         public Type type;
         public TargetType targetType;

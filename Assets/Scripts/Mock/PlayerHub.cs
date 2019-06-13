@@ -31,7 +31,10 @@ namespace Mock
                 Battler.InitializationParams par;
                 par.character = p.characterSO.character;
                 par.position = p.position;
+                // BrainSO b = (p.brainSO.GetType()) Instantiate(p.brainSO);
                 par.brain = p.brainSO.brain;
+                // Debug.Log(p.brainSO.brain.ToString());
+                // par.brain = (IBrain)System.Activator.CreateInstance((p.brainSO.brain).GetType());
                 teamParams.Add(par);
             }
 

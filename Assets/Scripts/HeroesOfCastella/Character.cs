@@ -27,16 +27,41 @@ namespace HeroesOfCastella
             public float agressivity;
         }
 
+        [System.Serializable]
+        public struct Serializable
+        {
+            public string name;
+            public Attributes attributes;
+            public Personality personality;
+            public string[] skillNames;
+        }
+
         public string name = "NEMO";
         public Attributes attributes;
         public Personality personality;
         public Skill[] skills;
 
+
+        public Character(byte[] data)
+        {
+            Deserialize(data);
+        }
+
         public byte[] Serialized()
         {
+            Serializable data = new Serializable();
+            data.name = name;
+            data.attributes = attributes;
+            data.personality = personality;
+            data.skillNames = new string[skills.Length];
+            for(int i = 0; i < skills.Length; i++)
+            {
+                data.skillNames[i] = skills[i].name;
+            }
+
             MemoryStream stream = new MemoryStream();
             BinaryFormatter binaryFormatter = new BinaryFormatter();
-            binaryFormatter.Serialize(stream, this);
+            binaryFormatter.Serialize(stream, data);
             return stream.GetBuffer();
         }
 
@@ -44,13 +69,19 @@ namespace HeroesOfCastella
         {
             MemoryStream stream = new MemoryStream(data);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
-            Character c = (Character)binaryFormatter.Deserialize(stream);
-            attributes = c.attributes;
-            personality = c.personality;
-            name = c.name;
+            Serializable s = (Serializable)binaryFormatter.Deserialize(stream);
+
+            attributes = s.attributes;
+            personality = s.personality;
+            name = s.name;
+            skills = new Skill[s.skillNames.Length];
+            for (int i = 0; i < s.skillNames.Length; i++)
+            {
+                skills[i] = (Skill)Resources.Load("Assets/Data/Skills/" + s.skillNames[i]);
+            }
             //FIXME remove bellow
-            skills = new Skill[1];
-            skills[0] = new Skill();
+            //skills = new Skill[1];
+            //skills[0] = new Skill();
         }
     }
 }

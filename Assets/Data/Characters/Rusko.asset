@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rusko
   m_EditorClassIdentifier: 
   character:
-    name: Arua
+    name: Rusko
     attributes:
       strength: 3
       dexterity: 3
@@ -21,6 +21,7 @@ MonoBehaviour:
       vitality: 3
       initiative: 3
     personality:
-      empathy: 0.458
-      agressivity: -0.473
-    skills: []
+      empathy: 0.21
+      agressivity: -0.375
+    skills:
+    - {fileID: 11400000, guid: ad113bddadc394348b1ab3df056f6381, type: 2}

@@ -25,10 +25,6 @@ namespace HeroesOfCastella
 
 
             public Byte[] serializedCharacter;
-
-            public Character.Attributes attributes;
-            public Character.Personality personality;
-            public string[] skillNames;
             public IBrain brain;
             public float posX;
             public float posY;
@@ -75,6 +71,11 @@ namespace HeroesOfCastella
             {
                 brain = p.brain;
             }
+        }
+
+        public Battler(byte[] data)
+        {
+            Deserialize(data);
         }
 
 
@@ -155,7 +156,7 @@ namespace HeroesOfCastella
                 //do something?
                 return;
             }
-            Debug.Log(this.GetName() + " is choosing his action.");
+            Debug.Log(this.GetName() + " is choosing his action. Brain is " + brain);
             //It is my turn
             active = true;
             //Get input
@@ -225,9 +226,7 @@ namespace HeroesOfCastella
             MemoryStream stream = new MemoryStream(data);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             BattlerSerializable obj = (BattlerSerializable)binaryFormatter.Deserialize(stream);
-            Character c = new Character();
-            c.Deserialize(obj.serializedCharacter);
-            character = c;
+            Character c = new Character(obj.serializedCharacter);
             //IBrain b = (IBrain)Activator.CreateInstance(Type.GetType(obj.brainType));
             //brain = b;
             brain = obj.brain;
