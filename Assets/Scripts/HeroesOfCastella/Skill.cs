@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace HeroesOfCastella
@@ -27,6 +29,7 @@ namespace HeroesOfCastella
             FREE_ENCUMBRANCE
         }
 
+        public string name;
         [Header("Type")]
         public Type type;
         public TargetType targetType;
@@ -54,7 +57,22 @@ namespace HeroesOfCastella
             }
             return false;            
         }
-        
+
+        public byte[] Serialized()
+        {
+            MemoryStream stream = new MemoryStream();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            binaryFormatter.Serialize(stream, this.name);
+            return stream.GetBuffer();
+        }
+
+        public void Deserialize(byte[] data)
+        {
+            MemoryStream stream = new MemoryStream(data);
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            string skillName = (string)binaryFormatter.Deserialize(stream);
+
+        }
     }
 
     

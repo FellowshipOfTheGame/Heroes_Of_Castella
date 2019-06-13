@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public delegate void OnActionChosenDelegate(IAction action);
 
-public interface IBattler : ITurnTaker, ISerializable, IMapElement
+public interface IBattler : ITurnTaker, IMapElement, ISerializable
 {
     string GetName();
     //Battle

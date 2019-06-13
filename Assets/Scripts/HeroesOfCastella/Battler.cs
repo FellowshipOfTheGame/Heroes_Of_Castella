@@ -1,20 +1,46 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using Mirror;
+
 
 namespace HeroesOfCastella
 {
-    
 
+    
     [System.Serializable]
     public class Battler : IBattler
     {
         [System.Serializable]
-        private struct BattlerSerialized
+        private struct BattlerSerializable
         {
             //Use serializable fields to describe the battler before effectively serializing to a byte stream
+            //public Byte[] serializedCharacter;
+            //public string brainType;
+            //public IBrain serializedBrain;
+            //public float posX;
+            //public float posY;
+
+
+            public Byte[] serializedCharacter;
+
+            public Character.Attributes attributes;
+            public Character.Personality personality;
+            public string[] skillNames;
+            public IBrain brain;
+            public float posX;
+            public float posY;
+
+        }
+
+        [System.Serializable]
+        public struct InitializationParams
+        {
+            public Character character;
+            public IBrain brain;
+            public Vector3 position;
         }
 
         [SerializeField]
@@ -39,6 +65,17 @@ namespace HeroesOfCastella
         public int HP { get => _hitpoints; set => _hitpoints = value; }
 
         private event OnActionChosenDelegate MyOnActionChosen;
+
+
+        public Battler(InitializationParams p)
+        {
+            character = p.character;
+            Position = p.position;
+            if (p.brain != null)
+            {
+                brain = p.brain;
+            }
+        }
 
 
         public void InitializeInitiative()
@@ -170,13 +207,31 @@ namespace HeroesOfCastella
         public byte[] Serialized()
         {
             //Format to a struct (with serializable data only) then use binary formatter to serialize
-            throw new NotImplementedException();
+            BattlerSerializable data = new BattlerSerializable();
+            data.serializedCharacter = character.Serialized();
+            data.brain = brain;
+            data.posX = Position.x;
+            data.posY = Position.y;
+
+            MemoryStream stream = new MemoryStream();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            binaryFormatter.Serialize(stream, data);
+            return stream.GetBuffer();
         }
 
         public void Deserialize(byte[] data)
         {
             //Use binary formatter to deserialize to a struct then "build" the object from the struct's fields
-            throw new NotImplementedException();
+            MemoryStream stream = new MemoryStream(data);
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            BattlerSerializable obj = (BattlerSerializable)binaryFormatter.Deserialize(stream);
+            Character c = new Character();
+            c.Deserialize(obj.serializedCharacter);
+            character = c;
+            //IBrain b = (IBrain)Activator.CreateInstance(Type.GetType(obj.brainType));
+            //brain = b;
+            brain = obj.brain;
+            Position = new Vector3(obj.posX, obj.posY);
         }
 
         public bool IsActive()

@@ -8,21 +8,44 @@ namespace Mock
     public class PlayerHub : MonoBehaviour
     {
         BattleScene battleScene;
-        public List<BattlerSO> battlerSOs;
         [SerializeField]
         List<IBattler> team = new List<IBattler>();
+        private List<Battler.InitializationParams> teamParams = new List<Battler.InitializationParams>();
+        public List<CharacterBattlerParamsSO> paramsSOs = new List<CharacterBattlerParamsSO>();
 
         private void Awake()
         {
-            for (int i = 0; i < battlerSOs.Count; i++)
-            {
-                battlerSOs[i] = Instantiate(battlerSOs[i]);
-            }
             battleScene = FindObjectOfType<BattleScene>();
-            foreach(BattlerSO b in battlerSOs)
+
+            //for (int i = 0; i < battlerSOs.Count; i++)
+            //{
+            //    battlerSOs[i] = Instantiate(battlerSOs[i]);
+            //}
+            //foreach(BattlerSO b in battlerSOs)
+            //{
+            //    team.Add(b.battler);
+            //}
+
+            foreach (CharacterBattlerParamsSO p in paramsSOs)
             {
-                team.Add(b.battler);
+                Battler.InitializationParams par;
+                par.character = p.characterSO.character;
+                par.position = p.position;
+                par.brain = p.brainSO.brain;
+                teamParams.Add(par);
             }
+
+            foreach (Battler.InitializationParams p in teamParams)
+            {
+                team.Add(new Battler(p));
+            }
+
+            // TODO REMOVE ALL LOOP CODE
+            foreach (Battler b in team)
+            {
+                b.Deserialize(b.Serialized());
+            }
+       
         }
 
         // Start is called before the first frame update

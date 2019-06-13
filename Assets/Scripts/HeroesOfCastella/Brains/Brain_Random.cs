@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace HeroesOfCastella
 {
+    [System.Serializable]
     public class Brain_Random : IBrain
     {
         Battler battler;

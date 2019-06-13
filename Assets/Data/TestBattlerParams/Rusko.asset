@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d846b03db1c06864ebdbe0432fe19c9d, type: 3}
+  m_Name: Rusko
+  m_EditorClassIdentifier: 
+  characterSO: {fileID: 11400000, guid: 85eb0e4cd4880734a9d87ece93b86fb6, type: 2}
+  position: {x: 2, y: 0, z: 0}
+  brainSO: {fileID: 11400000, guid: 1edf21b70d433634fbd5dea29860ba50, type: 2}

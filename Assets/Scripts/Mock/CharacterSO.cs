@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HeroesOfCastella;
 
-
-namespace Italo
+namespace Mock
 {
+    [CreateAssetMenu]
     public class CharacterSO : ScriptableObject
     {
-        // Todos os atributos aqui deve ser serializaveis e nao devem conter nenhuma referencia
+        public Character character;
     }
 }
 

@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMover : MonoBehaviour
+namespace Mock
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CameraMover : MonoBehaviour
     {
-        
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
 
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"))/10;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) / 10;
+        }
     }
 }
+
