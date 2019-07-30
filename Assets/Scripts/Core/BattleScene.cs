@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace HeroesOfCastella
 {
-    public class BattleScene : MonoBehaviour //FIXME use NetworkBehaviour instead
+    public class BattleScene : NetworkBehaviour
     {
         ITurnManager turnManager = new TurnManager();
         IBattleMap battleMap = new BattleMap();
@@ -72,8 +72,15 @@ namespace HeroesOfCastella
             }
             //turnManager.SetBattlers(battlers.ToList<ITurnTaker>());
             turnManager.TurnTakers = battlers.ToList<ITurnTaker>();
+            RpcCharacterSelectionEnded();
             isReady = true;
             turnManager.Unlock();
+        }
+
+        [ClientRpc]
+        public void RpcCharacterSelectionEnded(){
+            //TODO destroy the ui elements for character selection
+            //TODO instantiate elements required for gameplay
         }
 
         public bool IsReady() //TODO should probably use an event instead - check: what is it for?

@@ -25,7 +25,8 @@ namespace HeroesOfCastella
 
 
             public Byte[] serializedCharacter;
-            public IBrain brain;
+            public BrainSerializable serializedBrain;
+            //public IBrain brain;
             public float posX;
             public float posY;
 
@@ -59,6 +60,9 @@ namespace HeroesOfCastella
         [SerializeField]
         private int _hitpoints = 100; //FIXME MOCK
         public int HP { get => _hitpoints; set => _hitpoints = value; }
+
+        protected static int curID = 0;
+        public int ID { get; protected set; }
 
         private event OnActionChosenDelegate MyOnActionChosen;
 
@@ -98,6 +102,11 @@ namespace HeroesOfCastella
             }
         }
 
+        public void Configure(PlayerHUB player){
+            if(brain.GetType() == typeof(Brain_Player)){
+                (brain as Brain_Player).Configure(player);
+            }
+        }
 
 
 
@@ -198,6 +207,8 @@ namespace HeroesOfCastella
         public void SetTeam(int team)
         {
             this.team = team;
+            ID = curID;
+            curID++; // This might be dangerous depending on how parallel is unity's behaviour
         }
 
         public void SetInitiative(float value)
@@ -210,7 +221,8 @@ namespace HeroesOfCastella
             //Format to a struct (with serializable data only) then use binary formatter to serialize
             BattlerSerializable data = new BattlerSerializable();
             data.serializedCharacter = character.Serialized();
-            data.brain = brain;
+            //data.brain = brain;
+            data.serializedBrain = brain.Serialized();
             data.posX = Position.x;
             data.posY = Position.y;
 
@@ -229,7 +241,17 @@ namespace HeroesOfCastella
             Character c = new Character(obj.serializedCharacter);
             //IBrain b = (IBrain)Activator.CreateInstance(Type.GetType(obj.brainType));
             //brain = b;
-            brain = obj.brain;
+            //brain = obj.brain;
+            switch(obj.serializedBrain.type){
+                case BrainType.Brain_Random:
+                    brain = new Brain_Random();
+                    (brain as Brain_Random).Deserialize(obj.serializedBrain.data);
+                    break;
+                case BrainType.Brain_Player:
+                    brain = new Brain_Player();
+                    (brain as Brain_Player).Deserialize(obj.serializedBrain.data);
+                    break;
+            }
             Position = new Vector3(obj.posX, obj.posY);
         }
 
