@@ -61,8 +61,8 @@ namespace HeroesOfCastella
         private int _hitpoints = 100; //FIXME MOCK
         public int HP { get => _hitpoints; set => _hitpoints = value; }
 
-        protected static int curID = 0;
-        public int ID { get; protected set; }
+        protected static uint curID = 0;
+        public uint ID { get; protected set; }
 
         private event OnActionChosenDelegate MyOnActionChosen;
 
@@ -207,8 +207,7 @@ namespace HeroesOfCastella
         public void SetTeam(int team)
         {
             this.team = team;
-            ID = curID;
-            curID++; // This might be dangerous depending on how parallel is unity's behaviour
+            ID = curID++; // This might be dangerous depending on how parallel is unity's behaviour
         }
 
         public void SetInitiative(float value)

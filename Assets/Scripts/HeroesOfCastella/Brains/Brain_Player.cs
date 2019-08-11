@@ -11,7 +11,7 @@ namespace HeroesOfCastella
     public class Brain_Player : IBrain
     {
         private PlayerHUB player = null;
-        public int battlerID { get; protected set; }
+        public uint battlerID { get; protected set; }
         
         public event OnActionChosenDelegate OnActionChosen;
 

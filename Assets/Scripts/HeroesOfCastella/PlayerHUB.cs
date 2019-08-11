@@ -7,7 +7,19 @@ namespace HeroesOfCastella
 {
     public class PlayerHUB : NetworkBehaviour
     {
-        Brain_Player currentBrain = null;
+        public static PlayerHUB clientInstance = null;
+        private Brain_Player currentBrain = null;
+
+        public void Awake(){
+            if(isClient && clientInstance == null)
+                clientInstance = this;
+        }
+
+        [Client]
+        public void BattlersSelected(Battler battler1, Battler battler2, Battler battler3){
+            UISwitcher.instance.ClosePartySetup();
+            CmdAddStartingBattlers(battler1.Serialized(), battler2.Serialized(), battler3.Serialized());
+        }
 
         [Command]
         public void CmdAddStartingBattlers(byte[] serializedBattler1, byte[] serializedBattler2, byte[] serializedBattler3){
@@ -30,10 +42,15 @@ namespace HeroesOfCastella
         }
 
         [TargetRpc]
-        public void TargetRequestDecision(NetworkConnection conn, int battlerID){
-            //TODO Finds the current battler by ID and allows player to select an action (or tells someone to do it, which will probably be the case)
-            Action newAction = new Action(new Skill(), battlerID, new Vector3[0]);
-            CmdSendDecision(newAction.Serialized()); // FIXME ; MOCK : need to define how this decision will be done
+        public void TargetRequestDecision(NetworkConnection conn, uint battlerID){
+            //Finds the current battler by ID and allows player to select an action
+            UISwitcher.instance.OpenPlayerAction(battlerID);
+        }
+
+        [Client]
+        public void ActionDecided(Action action){
+            UISwitcher.instance.ClosePlayerAction();
+            CmdSendDecision(action.Serialized());
         }
 
         [Command]
@@ -41,6 +58,7 @@ namespace HeroesOfCastella
             Action action = new Action(new Skill(), 0, new Vector3[0]);
             action.Deserialize(actionSerial);
             currentBrain.Chose(action);
+            currentBrain = null;
         }
     }
 }

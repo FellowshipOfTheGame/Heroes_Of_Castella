@@ -10,10 +10,10 @@ namespace HeroesOfCastella
     public class Action : IAction, ISerializable
     {
         public Skill skill;
-        public int battlerID;
+        public uint battlerID;
         public Vector3[] target;
 
-        public Action (ISkill skill, int battlerID, params Vector3[] target)
+        public Action (ISkill skill, uint battlerID, params Vector3[] target)
         {
             this.skill = skill as Skill;
             this.battlerID = battlerID;

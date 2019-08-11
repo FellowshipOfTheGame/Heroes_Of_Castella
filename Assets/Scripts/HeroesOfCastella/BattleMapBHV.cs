@@ -37,7 +37,7 @@ namespace HeroesOfCastella
                         pos.z *= 1.5f;
                         Quaternion rot = Quaternion.LookRotation(Vector3.back * (t - 1.5f));
                         BattlerBHV obj = Instantiate(battlerPrefab, pos, rot, transform.GetChild(0));
-                        obj.battler = b as Battler;
+                        obj.Watch(b as Battler);
                         obj.name = "T" + t + "_B" + bt;
                     }
                 }

@@ -5,7 +5,7 @@ public delegate void OnActionChosenDelegate(IAction action);
 
 public interface IBattler : ITurnTaker, IMapElement, ISerializable
 {
-    int ID {get;}
+    uint ID {get;}
     string GetName();
     //Battle
     int GetTeam();
