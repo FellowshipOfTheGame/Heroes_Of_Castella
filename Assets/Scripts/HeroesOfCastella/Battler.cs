@@ -50,11 +50,16 @@ namespace HeroesOfCastella
         [SerializeField]
         private bool active = false;
 
+        public string armor;
+        public string rightHand;
+        public string leftHand;
+
         [SerializeField]
         private IBrain brain = new Brain_Random(); // TODO: Make it an SO, so that it can be more freely swapped?
 
        
         public Vector3 Position { get => _position; set => _position = value; }
+        public float Initiative { get => initiative; }
         public IBattleMap Map { get; set; }
 
         [SerializeField]

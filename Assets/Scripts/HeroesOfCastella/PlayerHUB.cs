@@ -16,17 +16,25 @@ namespace HeroesOfCastella
         }
 
         [Client]
-        public void BattlersSelected(Battler battler1, Battler battler2, Battler battler3){
+        public void BattlersSelected(Battler[] battlers){
             UISwitcher.instance.ClosePartySetup();
-            CmdAddStartingBattlers(battler1.Serialized(), battler2.Serialized(), battler3.Serialized());
+            // The size here has to be fixed at 3 for now
+            byte[][] serializedBattlers = new byte[3][];
+            for(int i = 0; i < battlers.Length; i++){
+                serializedBattlers[i] = battlers[i].Serialized();
+            }
+            CmdAddStartingBattlers(serializedBattlers[0], serializedBattlers[1], serializedBattlers[2], battlers.Length);
         }
 
         [Command]
-        public void CmdAddStartingBattlers(byte[] serializedBattler1, byte[] serializedBattler2, byte[] serializedBattler3){
-            IBattler[] battlerList = new IBattler[3];
-            battlerList[0].Deserialize(serializedBattler1);
-            battlerList[1].Deserialize(serializedBattler2);
-            battlerList[2].Deserialize(serializedBattler3);
+        public void CmdAddStartingBattlers(byte[] serializedBattler1, byte[] serializedBattler2, byte[] serializedBattler3, int nBattlers){
+            IBattler[] battlerList = new IBattler[nBattlers];
+            (battlerList[0] as Battler).Deserialize(serializedBattler1);
+            (battlerList[1] as Battler).Deserialize(serializedBattler2);
+            (battlerList[2] as Battler).Deserialize(serializedBattler3);
+            // for(int i = 0; i < nBattlers; i++){
+            //     (battlerList[i] as Battler).Deserialize(serializedBattlers[i]);
+            // }
             foreach(Battler battler in battlerList){
                 battler.Configure(this);
             }

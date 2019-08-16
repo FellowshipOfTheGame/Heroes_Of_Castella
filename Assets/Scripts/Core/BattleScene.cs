@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Windows;
 using Mirror;
 using System.Linq;
 
@@ -17,6 +18,9 @@ namespace HeroesOfCastella
         [SerializeField] //TODO remove
         List<List<IBattler>> teams = new List<List<IBattler>>();
         bool isReady = false;
+
+        public delegate void VoidDelegate();
+        public event VoidDelegate onBattleInitialize = null;
 
         
 
@@ -73,14 +77,16 @@ namespace HeroesOfCastella
             //turnManager.SetBattlers(battlers.ToList<ITurnTaker>());
             turnManager.TurnTakers = battlers.ToList<ITurnTaker>();
             RpcCharacterSelectionEnded();
+            onBattleInitialize();
             isReady = true;
             turnManager.Unlock();
         }
 
         [ClientRpc]
         public void RpcCharacterSelectionEnded(){
-            //TODO destroy the ui elements for character selection
-            //TODO instantiate elements required for gameplay
+            // Destroy the ui elements for character selection
+            // and instantiate elements required for gameplay
+            FindObjectOfType<UISwitcher>().ClosePartySetup();
         }
 
         public bool IsReady() //TODO should probably use an event instead - check: what is it for?

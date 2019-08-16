@@ -118,8 +118,9 @@ namespace HeroesOfCastella
         private async Task DelayedUnlock(int miliseconds)
         {
             await Task.Delay(miliseconds);
-            activeBattler.SetInitiative(0);
-            Unlock();
+            // TODO This will be commented for now because guaranteeing server-client synchrony is troublesome
+            //activeBattler.SetInitiative(0);
+            //Unlock();
         }
 
         public void RemoveBattler(ITurnTaker battler)
